@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LocalLens AI – India audio guide</title>
+<style>
+:root{--hill:#0f3d3a;--hill2:#1d5c55;--gold:#e0a526;--kum:#b5232f;--mist:#eef3f1;--ink:#14201f;--mute:#5a6d6a;--card:#fff;--line:#d3dfdb;
+--sans:system-ui,-apple-system,"Segoe UI","Noto Sans Telugu","Nirmala UI","Noto Sans Devanagari",sans-serif;--serif:Georgia,"Noto Serif Telugu","Nirmala UI",serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:8px}
+body{font:16px/1.55 var(--sans);color:var(--ink);background:var(--mist);padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hero{background:var(--hill);color:#fff;padding:env(safe-area-inset-top,0) 0 0;position:relative;overflow:hidden}
+.hero .in{max-width:760px;margin:auto;padding:18px 18px 70px;position:relative;z-index:2}
+.brand{font:700 1.5rem var(--serif);letter-spacing:.2px}
+.brand small{display:block;font:400 .85rem var(--sans);opacity:.8;letter-spacing:0}
+.langs{display:flex;gap:8px;margin-top:18px}
+.langs button{flex:1;border:2px solid #ffffff55;background:transparent;color:#fff;border-radius:14px;padding:10px 6px;font-size:1.25rem;font-weight:600;transition:.2s}
+.langs button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#241a00}
+.hills{position:absolute;left:0;right:0;bottom:-1px;height:70px;width:100%;z-index:1}
+main{max-width:760px;margin:-8px auto 0;padding:0 14px}
+.view{display:none;padding-top:14px}.view.on{display:block}
+h2{font:700 1.6rem/1.2 var(--serif)}
+h3{font:700 1.15rem var(--serif);margin-bottom:6px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.btn,.primary,.ghost{display:inline-flex;gap:6px;align-items:center;justify-content:center;border-radius:12px;padding:10px 16px;text-decoration:none;border:2px solid var(--hill);background:#fff;color:var(--hill);font-weight:600;min-height:44px}
+.primary{background:var(--kum);border-color:var(--kum);color:#fff}
+.primary[aria-pressed=true]{background:var(--ink);border-color:var(--ink)}
+.ghost{border-color:var(--line);font-weight:500}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin}
+.chips button{flex:none;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;white-space:nowrap}
+.chips button[aria-current=true]{background:var(--hill);color:#fff;border-color:var(--hill)}
+.place{background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.pic{height:190px;background:linear-gradient(135deg,var(--hill2),var(--gold));display:grid;place-items:center;font-size:3.5rem}
+.pic img{width:100%;height:100%;object-fit:cover}
+.body{padding:18px}
+.meta{color:var(--mute);font-size:.9rem;margin-bottom:4px}
+.desc{margin:10px 0 14px;max-width:62ch}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.story{margin-top:16px;padding:14px 16px;border-left:5px solid var(--gold);background:#fbf5e4;border-radius:0 12px 12px 0}
+.next{margin-top:16px;width:100%}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.card ol{padding-left:0;list-style:none;display:grid;gap:6px;margin:10px 0}
+.card li button{width:100%;text-align:left;border:0;background:var(--mist);padding:10px 12px;border-radius:10px}
+.card p{color:var(--mute)}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.item b{display:block;font-family:var(--serif)}
+.map{background:#dfeae6;border-radius:20px;border:1px solid var(--line);width:100%;height:auto;display:block}
+.map text{font:600 11px var(--sans);fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3px}
+.map g.pin{cursor:pointer}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:260px;max-height:50vh;overflow:auto;padding:4px}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.msg.me{align-self:flex-end;background:var(--hill);color:#fff;border-color:var(--hill)}
+.ask{display:flex;gap:8px;margin-top:10px}
+.ask input{flex:1;min-width:0}
+input,select,textarea{border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;width:100%;min-height:44px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0);z-index:9}
+nav button{flex:1;max-width:150px;border:0;background:none;padding:10px 4px 8px;font-size:.78rem;color:var(--mute);display:grid;gap:2px;justify-items:center}
+nav button span{font-size:1.35rem}
+nav button[aria-current=true]{color:var(--kum);font-weight:700;box-shadow:inset 0 3px 0 var(--kum)}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90%;text-align:center}
+#toast.on{opacity:1}
+.tag{display:inline-block;background:var(--mist);border-radius:8px;padding:2px 8px;font-size:.8rem;margin-right:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.search{display:flex;gap:8px;margin:14px 0 6px}.search input{flex:1;min-width:0}
+.mic{flex:none;width:48px;min-height:44px;border-radius:12px;border:2px solid var(--hill);background:#fff;font-size:1.2rem}
+.mic.rec{background:var(--kum);border-color:var(--kum);animation:p 1s infinite alternate}@keyframes p{to{opacity:.55}}
+.res{display:grid;gap:6px;margin-bottom:6px}.res button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.vsel{display:flex;gap:8px;align-items:center;margin:4px 0 2px;color:var(--mute);font-size:.9rem}.vsel select{width:auto;min-height:36px;padding:4px 8px}
+#lmap{height:430px;border-radius:20px;border:1px solid var(--line);z-index:0}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="in">
+    <div class="brand">LocalLens AI<small id="tag">Your multilingual guide to India</small></div>
+    <div class="langs" role="group" aria-label="Language">
+      <button data-l="te" lang="te">తెలుగు</button><button data-l="en">English</button><button data-l="hi" lang="hi">हिन्दी</button>
+    </div>
+  </div>
+  <svg class="hills" viewBox="0 0 760 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V40L70 18l60 22 70-30 80 34 90-26 90 30 80-22 80 26 70-20 70 18v20z" fill="#1d5c55"/><path d="M0 70V54l90-18 90 20 110-24 110 24 120-18 120 20 90-12v24z" fill="#eef3f1"/></svg>
+</header>
+
+<main>
+  <form class="search" id="sf" role="search"><input id="sq" placeholder="Search any place in India" aria-label="Search any place in India" autocomplete="off"><button type="button" class="mic" id="smic" aria-label="Speak a place name">🎤</button><button class="primary">Go</button></form>
+  <div class="res" id="sres"></div>
+  <div class="vsel"><label for="vl">🎤 Voice language</label><select id="vl"><option value="te">తెలుగు</option><option value="hi">हिन्दी</option><option value="en">English</option></select></div>
+  <section class="view on" id="v-explore" aria-label="Explore"></section>
+  <section class="view" id="v-map" aria-label="Map"></section>
+  <section class="view" id="v-ask" aria-label="Ask">
+    <h2>Ask LocalLens</h2><p class="meta">Type, or tap 🎤 and speak in Telugu, Hindi or English. The answer is spoken back in the same language.</p>
+    <div class="chips" id="sugg"></div>
+    <div class="chat" id="chat" aria-live="polite"></div>
+    <form class="ask" id="askf"><input id="q" placeholder="Why is this place famous?" aria-label="Your question" autocomplete="off"><button type="button" class="mic" id="qmic" aria-label="Ask by voice">🎤</button><button class="primary">Ask</button></form>
+  </section>
+  <section class="view" id="v-trips" aria-label="Trips"></section>
+  <section class="view" id="v-admin" aria-label="Admin"></section>
+</main>
+
+<nav aria-label="Main">
+  <button data-v="explore"><span>🛕</span>Explore</button>
+  <button data-v="map"><span>🗺️</span>Map</button>
+  <button data-v="ask"><span>💬</span>Ask</button>
+  <button data-v="trips"><span>🧭</span>Trips</button>
+  <button data-v="admin"><span>⚙️</span>Admin</button>
+</nav>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast('Storage is full. Try a smaller image or audio file.');return false}}};
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),3200)}
+
+/* ---------- Data (demo content: verify timings and details before real use) ---------- */
+const BASE=[
+{id:'venkateswara',type:'temple',ll:[13.6833,79.3472],
+ n:{en:'Sri Venkateswara Temple, Tirumala',te:'శ్రీ వేంకటేశ్వర స్వామి ఆలయం, తిరుమల',hi:'श्री वेंकटेश्वर मंदिर, तिरुमला'},
+ d:{en:'Set on the Seven Hills of Tirumala, this Dravidian-style temple is among the most visited pilgrimage sites in the world. Pilgrims come to see Lord Venkateswara and to receive the famous laddu prasadam.',
+    te:'తిరుమల ఏడు కొండలపై ఉన్న శ్రీ వేంకటేశ్వర స్వామి ఆలయం ప్రపంచంలో అత్యధిక మంది భక్తులు సందర్శించే క్షేత్రాలలో ఒకటి. ద్రవిడ శిల్పశైలిలో నిర్మితమైన ఈ ఆలయం శతాబ్దాల చరిత్ర కలిగి ఉంది.',
+    hi:'तिरुमला की सात पहाड़ियों पर स्थित श्री वेंकटेश्वर मंदिर दुनिया में सबसे अधिक दर्शनार्थियों वाले तीर्थों में से एक है। द्रविड़ शैली का यह मंदिर सदियों पुराना है।'},
+ s:'Local belief says the Seven Hills are the seven heads of the serpent Adisesha, and that the Lord took this hill as his home in the Kali age.'},
+{id:'padmavathi',type:'temple',ll:[13.6054,79.4210],
+ n:{en:'Sri Padmavathi Ammavari Temple, Tiruchanur',te:'శ్రీ పద్మావతి అమ్మవారి ఆలయం, తిరుచానూరు',hi:'श्री पद्मावती मंदिर, तिरुचानूर'},
+ d:{en:'Dedicated to Goddess Padmavathi, consort of Lord Venkateswara. Devotees traditionally visit here to complete their Tirumala pilgrimage.',
+    te:'తిరుచానూరులోని పద్మావతి అమ్మవారి ఆలయం వేంకటేశ్వరుని దేవేరి పద్మావతీ దేవికి అంకితం. తిరుమల యాత్ర ఇక్కడి దర్శనంతో పూర్తవుతుందని భక్తుల నమ్మకం.',
+    hi:'तिरुचानूर का पद्मावती मंदिर भगवान वेंकटेश्वर की पत्नी देवी पद्मावती को समर्पित है। भक्तों का विश्वास है कि यहाँ दर्शन से तिरुमला यात्रा पूर्ण होती है।'},
+ s:'Legend says the Goddess emerged from a golden lotus in the temple tank, which is why the tank is called Padma Sarovaram.'},
+{id:'govinda',type:'temple',ll:[13.6283,79.4192],
+ n:{en:'Sri Govindaraja Swamy Temple',te:'శ్రీ గోవిందరాజస్వామి ఆలయం',hi:'श्री गोविंदराजस्वामी मंदिर'},
+ d:{en:'A grand temple in the middle of Tirupati town, known for its tall gopuram. It is traditionally linked to the saint Ramanujacharya.',
+    te:'తిరుపతి నగర మధ్యలో ఉన్న గోవిందరాజస్వామి ఆలయం ఎత్తైన గోపురంతో ప్రసిద్ధి. ఇది శ్రీ రామానుజాచార్యులచే ప్రతిష్ఠించబడినదని చెబుతారు.',
+    hi:'तिरुपति शहर के बीच स्थित गोविंदराजस्वामी मंदिर अपने ऊँचे गोपुरम के लिए प्रसिद्ध है। माना जाता है कि इसकी प्रतिष्ठा रामानुजाचार्य ने की थी।'},
+ s:'Locals call the deity the elder brother of Lord Venkateswara, so many pilgrims stop here first.'},
+{id:'kapila',type:'temple',ll:[13.6498,79.4150],
+ n:{en:'Kapila Theertham',te:'కపిల తీర్థం',hi:'कपिल तीर्थम'},
+ d:{en:'A Shiva temple and waterfall at the foot of the Tirumala hills, and the main Shaiva shrine of Tirupati.',
+    te:'కపిల తీర్థం తిరుమల కొండ పాదాల వద్ద ఉన్న శివాలయం మరియు జలపాతం. తిరుపతిలో ఉన్న ప్రధాన శైవ క్షేత్రం ఇది.',
+    hi:'कपिल तीर्थम तिरुमला की तलहटी में स्थित शिव मंदिर और झरना है। यह तिरुपति का प्रमुख शैव तीर्थ है।'},
+ s:'The sage Kapila is said to have worshipped Shiva here, and the waterfall is believed to carry holy water.'},
+{id:'chandragiri',type:'museum',ll:[13.5847,79.3187],
+ n:{en:'Chandragiri Fort & Museum',te:'చంద్రగిరి కోట & మ్యూజియం',hi:'चंद्रगिरि किला और संग्रहालय'},
+ d:{en:'A fort that served as a capital in the Vijayanagara era. The Raja Mahal inside now houses an archaeological museum.',
+    te:'చంద్రగిరి కోట విజయనగర సామ్రాజ్య కాలంలో రాజధానిగా ఉండేది. కోటలోని రాజమహల్ ఇప్పుడు పురావస్తు ప్రదర్శనశాలగా ఉంది.',
+    hi:'चंद्रगिरि किला विजयनगर साम्राज्य के दौर में राजधानी रहा। किले का राजा महल अब पुरातत्व संग्रहालय है।'},
+ s:'Stories say the last Vijayanagara rulers shifted their court here after the fall of Hampi.'},
+{id:'market',type:'market',ll:[13.6290,79.4170],
+ n:{en:'Local Market (Handicrafts)',te:'స్థానిక మార్కెట్ (హస్తకళలు)',hi:'स्थानीय बाज़ार (हस्तशिल्प)'},
+ d:{en:'A busy town market for souvenirs: Kalamkari prints, wooden toys, brass idols and temple-style jewellery.',
+    te:'సావనీర్ల కోసం రద్దీగా ఉండే పట్టణ మార్కెట్: కలంకారీ, చెక్క బొమ్మలు, ఇత్తడి విగ్రహాలు, ఆలయ శైలి నగలు.',
+    hi:'यादगार वस्तुओं के लिए व्यस्त बाज़ार: कलमकारी, लकड़ी के खिलौने, पीतल की मूर्तियाँ और मंदिर शैली के गहने।'},
+ s:'Bargain gently and ask the seller where an item was made. Many pieces come from nearby Srikalahasti and village workshops.'},
+{id:'tiffin',type:'food',ll:[13.6275,79.4205],
+ n:{en:'Traditional Tiffin Stalls',te:'సంప్రదాయ టిఫిన్ దుకాణాలు',hi:'पारंपरिक टिफ़िन स्टॉल'},
+ d:{en:'Try pulihora, sakkara pongal, curd rice and hot idli with chutney in the old town streets.',
+    te:'పాత పట్టణ వీధుల్లో పులిహోర, చక్కెర పొంగలి, దద్దోజనం, వేడి ఇడ్లీ చట్నీ రుచి చూడండి.',
+    hi:'पुराने शहर की गलियों में पुलिहोरा, शक्कर पोंगल, दही-चावल और गरम इडली-चटनी चखें।'},
+ s:'Temple towns have a tradition of simple vegetarian food served on banana leaf.'}
+];
+const ICON={temple:'🛕',museum:'🏛️',market:'🛍️',food:'🍛',other:'📍'};
+const FOOD=[['Tirupati Laddu','తిరుపతి లడ్డు','Temple prasadam, made with ghee, sugar and cashew.'],['Pulihora','పులిహోర','Tamarind rice tempered with peanuts and curry leaves.'],['Sakkara Pongal','చక్కెర పొంగలి','Sweet rice and moong dal with jaggery and ghee.'],['Daddojanam','దద్దోజనం','Cooling curd rice, often offered at temples.']];
+const SHOP=[['Kalamkari','కలంకారీ','Hand-painted or block-printed cotton, from nearby Srikalahasti.'],['Wooden toys','చెక్క బొమ్మలు','Lacquered toys and small figures.'],['Brass idols','ఇత్తడి విగ్రహాలు','Small deity idols and puja lamps.'],['Temple jewellery','ఆలయ నగలు','Bangles and necklaces in traditional style.']];
+const ROUTES=[{id:'r1',n:'Temple → Museum → Market → Food',stops:['kapila','chandragiri','market','tiffin']},{id:'r2',n:'Pilgrim day',stops:['padmavathi','govinda','venkateswara']},{id:'r3',n:'Old town walk',stops:['govinda','market','tiffin']}];
+Object.assign(ICON,{beach:'🏖️',fort:'🏰',hill:'⛰️',heritage:'🏛️',nature:'🌿'});
+const CAT=[
+['madurai','Meenakshi Amman Temple','temple','Tamil Nadu',9.9195,78.1193,'A grand temple of Goddess Meenakshi in Madurai, known for its tall, colourful gopurams and the thousand-pillar hall.'],
+['golden','Golden Temple','temple','Punjab',31.62,74.8765,'The holiest Sikh shrine, a gold-covered gurdwara in the middle of a sacred pool in Amritsar. Its community kitchen serves free meals.'],
+['kashi','Kashi Vishwanath Temple','temple','Uttar Pradesh',25.3109,83.0107,'One of the most famous Shiva temples, near the Ganga in Varanasi, a pilgrimage city for thousands of years.'],
+['puri','Jagannath Temple, Puri','temple','Odisha',19.8048,85.818,'A major Vishnu temple on the Odisha coast, famous for the Rath Yatra chariot festival each year.'],
+['tanjore','Brihadisvara Temple, Thanjavur','temple','Tamil Nadu',10.7828,79.1318,'A Chola-era Shiva temple with a tower about 66 m tall, built roughly a thousand years ago. UNESCO World Heritage site.'],
+['somnath','Somnath temple','temple','Gujarat',20.888,70.4013,'A Shiva shrine on the Gujarat coast, rebuilt several times and counted among the twelve jyotirlingas.'],
+['konark','Konark Sun Temple','temple','Odisha',19.8876,86.0945,'A 13th-century temple shaped like a giant chariot of the Sun god, with carved stone wheels. UNESCO World Heritage site.'],
+['rames','Ramanathaswamy Temple','temple','Tamil Nadu',9.2881,79.3174,'A temple on Rameswaram island, known for its very long pillared corridors and holy sea-water baths.'],
+['kalahasti','Srikalahasti Temple','temple','Andhra Pradesh',13.7498,79.698,'A Shiva temple on the Swarnamukhi river near Tirupati. The town is also known for Kalamkari art.'],
+['srisailam','Srisailam Temple','temple','Andhra Pradesh',16.074,78.868,'A hilltop Shiva temple in the Nallamala hills, one of the twelve jyotirlingas and a Shakti peetha.'],
+['calangute','Calangute','beach','Goa',15.5439,73.7553,"Goa's busiest beach, with beach shacks, water sports and sunset views."],
+['marina','Marina Beach','beach','Tamil Nadu',13.05,80.2824,'A very long city beach in Chennai, popular for evening walks and street snacks.'],
+['radhanagar','Radhanagar Beach','beach','Andaman and Nicobar',11.9856,92.9503,'A white-sand beach with clear water on Havelock Island in the Andamans.'],
+['kovalam','Kovalam','beach','Kerala',8.4004,76.9787,'A crescent-shaped beach resort near Thiruvananthapuram with calm bays and a lighthouse.'],
+['rkbeach','Ramakrishna Beach','beach','Andhra Pradesh',17.714,83.3236,'A city beach in Visakhapatnam with a long promenade facing the Bay of Bengal.'],
+['amer','Amer Fort','fort','Rajasthan',26.9855,75.8513,'A hilltop fort-palace near Jaipur in red sandstone and marble, famous for its mirror hall.'],
+['red','Red Fort','fort','Delhi',28.6562,77.241,'A 17th-century Mughal fort in Delhi. The Prime Minister addresses the nation from here on Independence Day.'],
+['golconda','Golconda Fort','fort','Telangana',17.3833,78.4011,'A fort near Hyderabad known for its clever acoustics and its history as a diamond-trading centre.'],
+['mehran','Mehrangarh','fort','Rajasthan',26.2978,73.0184,'A huge fort rising above Jodhpur, with museums, palaces and views over the blue city.'],
+['chittor','Chittorgarh Fort','fort','Rajasthan',24.8887,74.6459,"One of India's largest forts, linked with stories of Rajput courage."],
+['munnar','Munnar','hill','Kerala',10.0889,77.0595,'A tea-garden hill station with misty valleys and rolling plantations.'],
+['shimla','Shimla','hill','Himachal Pradesh',31.1048,77.1734,'The hill capital of Himachal Pradesh, once the British summer capital, with a toy train and the Mall Road.'],
+['darj','Darjeeling','hill','West Bengal',27.036,88.2627,'A Himalayan town known for its tea and views of Kangchenjunga.'],
+['ooty','Ooty','hill','Tamil Nadu',11.4102,76.695,'A hill station in the Nilgiris with lakes, gardens and a heritage mountain railway.'],
+['araku','Araku Valley','hill','Andhra Pradesh',18.3273,82.8775,'A green valley in the Eastern Ghats known for coffee plantations and tribal culture.'],
+['taj','Taj Mahal','heritage','Uttar Pradesh',27.1751,78.0421,"A white marble tomb in Agra built by Shah Jahan, one of the world's best known monuments."],
+['hampi','Hampi','heritage','Karnataka',15.335,76.46,'The ruins of the Vijayanagara capital, with giant boulders, temples and a stone chariot. UNESCO World Heritage site.'],
+['charminar','Charminar','heritage','Telangana',17.3616,78.4747,'A 16th-century monument in Hyderabad with four minarets, surrounded by bangle and pearl markets.'],
+['gateway','Gateway of India','heritage','Maharashtra',18.922,72.8347,"An arch monument on Mumbai's waterfront, built to mark the 1911 visit of King George V."],
+['khajuraho','Khajuraho Group of Monuments','heritage','Madhya Pradesh',24.8318,79.9199,'Temples famous for detailed stone carvings, built about a thousand years ago.'],
+['ajanta','Ajanta Caves','heritage','Maharashtra',20.5519,75.7033,'Rock-cut Buddhist caves with ancient paintings and sculptures.'],
+['indiagate','India Gate','heritage','Delhi',28.6129,77.2295,'A war memorial arch in Delhi, with lawns popular for evening walks.'],
+['victoria','Victoria Memorial, Kolkata','heritage','West Bengal',22.5448,88.3426,'A white marble museum and memorial set in a large garden in Kolkata.'],
+['backwaters','Kerala backwaters','nature','Kerala',9.4981,76.3388,'A network of lagoons and canals that you can explore on a houseboat.'],
+['corbett','Jim Corbett National Park','nature','Uttarakhand',29.53,78.7747,"India's oldest national park, known for tigers and jungle safaris."],
+['valley','Valley of Flowers National Park','nature','Uttarakhand',30.728,79.605,'A high Himalayan valley that fills with wild flowers in the monsoon months. UNESCO World Heritage site.'],
+['dudh','Dudhsagar Falls','nature','Goa',15.3144,74.3143,'A four-tier waterfall on the Goa–Karnataka border that looks like a stream of milk.'],
+['sundar','Sundarbans','nature','West Bengal',21.9497,88.8995,'A vast mangrove delta shared by India and Bangladesh, home of the Bengal tiger.'],
+['rann','Rann of Kutch','nature','Gujarat',23.7337,69.8597,'A white salt desert famous for the Rann Utsav festival in winter.']
+].map(a=>({id:a[0],title:a[1],type:a[2],st:a[3],live:1,ll:[a[4],a[5]],n:{en:a[1]},d:{en:a[6]}}));
+const INDIA=BASE.filter(p=>p.type==='temple'||p.type==='museum').concat(CAT);
+const CATS={all:{en:'All',te:'అన్నీ',hi:'सभी'},temple:{en:'Temples',te:'దేవాలయాలు',hi:'मंदिर'},beach:{en:'Beaches',te:'బీచ్‌లు',hi:'समुद्र तट'},fort:{en:'Forts',te:'కోటలు',hi:'किले'},hill:{en:'Hill stations',te:'కొండ ప్రాంతాలు',hi:'पहाड़ी स्थल'},heritage:{en:'Heritage',te:'వారసత్వం',hi:'विरासत'},nature:{en:'Nature',te:'ప్రకృతి',hi:'प्रकृति'}};
+const ROUTES_IN=[{id:'gt',n:'Golden Triangle: Delhi, Agra, Jaipur',stops:['red','taj','amer']},{id:'deccan',n:'Deccan heritage: Hampi, Golconda, Charminar',stops:['hampi','golconda','charminar']},{id:'tn',n:'Temples of Tamil Nadu',stops:['madurai','rames','tanjore']},{id:'coast',n:'Southern coast',stops:['marina','kovalam']}];
+const UI={en:{listen:'Listen',stop:'Stop',nav:'Navigate',save:'Save offline',saved:'Saved offline',next:'Next stop',story:'Local story',near:'Use my location',tag:'Your multilingual guide to India'},
+ te:{listen:'వినండి',stop:'ఆపండి',nav:'దారి చూపు',save:'ఆఫ్‌లైన్ సేవ్',saved:'సేవ్ అయింది',next:'తదుపరి స్థలం',story:'స్థానిక కథ',near:'నా లొకేషన్',tag:'భారతదేశం కోసం మీ బహుభాషా గైడ్'},
+ hi:{listen:'सुनें',stop:'रोकें',nav:'रास्ता',save:'ऑफ़लाइन सहेजें',saved:'सहेजा गया',next:'अगला स्थान',story:'स्थानीय कथा',near:'मेरी लोकेशन',tag:'भारत के लिए आपका बहुभाषी गाइड'}};
+const VOICE={te:'te-IN',en:'en-IN',hi:'hi-IN'};
+UI.en.sph='Search any place in India';UI.te.sph='భారతదేశంలో ఏ ప్రదేశమైనా వెతకండి';UI.hi.sph='भारत में कोई भी जगह खोजें';
+UI.en.qph='Why is this place famous?';UI.te.qph='ఈ ప్రదేశం ఎందుకు ప్రసిద్ధి?';UI.hi.qph='यह जगह क्यों प्रसिद्ध है?';
+
+/* ---------- State ---------- */
+let lang=ls.get('ll_lang','en'),cur='taj',pos=null,route=null,speaking=false,audio=null;
+let custom=ls.get('ll_custom',[]),savedIds=ls.get('ll_saved',[]);
+let region={name:'India highlights',ll:[22.5,79],live:INDIA,india:1},nb=null,cat='all';
+const catOk=p=>cat==='all'||p.type===cat||(cat==='heritage'&&p.type==='museum');
+const inR=p=>region.india||dist(region.ll,p.ll)<80;
+const all=()=>(region.live||BASE).concat(custom.filter(inR)),get=id=>all().find(p=>p.id===id)||all()[0];
+const T=o=>(o&&(o[lang]||o.en))||'';
+const U=k=>UI[lang][k];
+function dist(a,b){const R=6371,r=x=>x*Math.PI/180,dl=r(b[0]-a[0]),dn=r(b[1]-a[1]);
+ const h=Math.sin(dl/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+const dtxt=p=>pos?` · ${dist(pos,p.ll).toFixed(1)} km`:(p.dm?` · ${(p.dm/1000).toFixed(1)} km`:'');
+const ordered=()=>{const a=all().slice();return pos?a.sort((x,y)=>dist(pos,x.ll)-dist(pos,y.ll)):a};
+
+/* ---------- Speech ---------- */
+function stopSpeech(){speechSynthesis&&speechSynthesis.cancel();if(audio){audio.pause();audio=null}speaking=false}
+function speak(text,l,custAudio){
+ stopSpeech();
+ if(custAudio){audio=new Audio(custAudio);audio.onended=()=>{speaking=false;renderExplore()};audio.play().catch(()=>toast('Could not play the uploaded audio'));speaking=true;return}
+ if(!('speechSynthesis' in window)){toast('Audio is not supported in this browser');return}
+ const u=new SpeechSynthesisUtterance(text);u.lang=VOICE[l];u.rate=.92;
+ const v=speechSynthesis.getVoices().find(v=>v.lang.replace('_','-').toLowerCase().startsWith(l));
+ if(v)u.voice=v;else toast('No '+LANGS_NAME[l]+' voice found on this device. Add one in your system language settings.');
+ u.onend=u.onerror=()=>{speaking=false;renderExplore()};speechSynthesis.speak(u);speaking=true;
+}
+const LANGS_NAME={te:'Telugu',en:'English',hi:'Hindi'};
+
+/* ---------- Explore ---------- */
+function renderExplore(){
+ const p=get(cur),isSaved=savedIds.includes(p.id);
+ const list=ordered(),rt=route?route.stops.map(get):null;
+ $('#v-explore').innerHTML=`
+ <div class="bar"><span class="tag">📍 ${esc(region.name.split(',')[0])}</span><button class="ghost" id="loc">🎯 ${U('near')}</button>${region.india?'<button class="ghost" id="demo">Tirupati demo</button>':'<button class="ghost" id="indiab">↩ All India</button>'}${route?`<span class="tag">🧭 ${esc(route.n)}</span><button class="ghost" id="endr">✕</button>`:''}</div>
+ ${region.india?`<div class="chips">${Object.keys(CATS).map(k=>`<button data-cat="${k}" ${k===cat?'aria-current="true"':''}>${k==='all'?'':ICON[k]+' '}${CATS[k][lang]}</button>`).join('')}</div>`:''}<div class="chips" role="list">${(rt||(region.india?list.filter(catOk):list)).map(x=>`<button role="listitem" data-p="${esc(x.id)}" ${x.id===cur?'aria-current="true"':''}>${ICON[x.type]||'📍'} ${esc(T(x.n).split(',')[0])}${dtxt(x)}</button>`).join('')}</div>
+ <article class="place">
+  <div class="pic">${p.img?`<img src="${p.img}" alt="${esc(T(p.n))}">`:ICON[p.type]||'📍'}</div>
+  <div class="body">
+   <p class="meta">${esc(p.type)}${p.st?' · '+esc(p.st):''}${dtxt(p)}</p>
+   <h2 lang="${lang}">${esc(T(p.n))}</h2>
+   <p class="desc" lang="${lang}">${esc(T(p.d))}</p>
+   <div class="acts">
+    <button class="primary" id="listen" aria-pressed="${speaking}">${speaking?'⏹ '+U('stop'):'🎧 '+U('listen')}</button>
+    <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${p.ll[0]},${p.ll[1]}">🗺️ ${U('nav')}</a>
+    <button class="btn" id="save" ${isSaved?'disabled':''}>${isSaved?'✓ '+U('saved'):'⬇ '+U('save')}</button>
+   </div>
+   ${p.s?`<div class="story"><h3>📜 ${U('story')}</h3><p>${esc(p.s)}</p></div>`:''}
+   <button class="primary next" id="next">${U('next')} ➜</button>
+  </div>
+ </article>`;
+}
+function go(id){stopSpeech();cur=id;renderExplore();renderMap();ensureLang(get(id));ensureImg(get(id))}
+function nextStop(){const l=route?route.stops:ordered().filter(catOk).map(x=>x.id);go(l[(l.indexOf(cur)+1)%l.length])}
+document.addEventListener('click',e=>{
+ const c=e.target.closest('button,a');if(!c)return;
+ if(c.dataset.p){go(c.dataset.p)}
+ else if(c.dataset.cat){cat=c.dataset.cat;const f=ordered().filter(catOk)[0];if(f)cur=f.id;renderExplore();ensureLang(get(cur));ensureImg(get(cur))}
+ else if(c.id==='listen'){if(speaking){stopSpeech();renderExplore()}else{const p=get(cur),L=p.d[lang]?lang:'en';if(L!==lang)toast('No '+LANGS_NAME[lang]+' text for this place yet. Reading English.');speak(T(p.d),L,p.audio&&p.audio[lang]);renderExplore()}}
+ else if(c.id==='next')nextStop();
+ else if(c.id==='save'){savedIds.push(cur);ls.set('ll_saved',savedIds);try{localStorage.setItem('ll_offline_'+cur,JSON.stringify(get(cur)))}catch(x){}renderExplore();toast(U('saved'))}
+ else if(c.id==='endr'){route=null;renderExplore()}
+ else if(c.id==='demo'||c.id==='indiab'){const d=c.id==='demo';region=d?{name:'Tirupati (demo)',ll:[13.63,79.42],live:null}:{name:'India highlights',ll:[22.5,79],live:INDIA,india:1};pos=null;nb=null;route=null;cur=d?'venkateswara':'taj';cat='all';renderAll()}
+ else if(c.id==='loc'){
+  if(!navigator.geolocation){toast('Location is not available on this device');return}
+  navigator.geolocation.getCurrentPosition(g=>{pos=[g.coords.latitude,g.coords.longitude];nb=null;loadRegion('Near you',pos)},()=>toast('Location permission denied. Pick a place from the list.'),{timeout:8000});
+ }
+ else if(c.dataset.go){setView('explore');go(c.dataset.go)}
+ else if(c.dataset.route){route=routes().find(r=>r.id===c.dataset.route);cur=route.stops[0];setView('explore');renderExplore();window.scrollTo({top:0})}
+ else if(c.dataset.del){custom=custom.filter(x=>x.id!==c.dataset.del);ls.set('ll_custom',custom);if(cur===c.dataset.del)cur='venkateswara';renderAll()}
+});
+
+/* ---------- Map: real map when online, drawn map when offline ---------- */
+function renderMap(){
+ if(!$('#v-map').classList.contains('on'))return;
+ if(!window.L)return svgMap();
+ $('#v-map').innerHTML='<h2>Map</h2><p class="meta">Tap a pin to open the place.</p><div id="lmap"></div>';
+ const A=all(),m=L.map('lmap').setView(region.ll,13),pts=[];
+ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(m);
+ A.forEach(p=>{pts.push(p.ll);L.circleMarker(p.ll,{radius:p.id===cur?11:8,color:'#fff',weight:3,fillColor:p.id===cur?'#b5232f':'#0f3d3a',fillOpacity:1}).addTo(m).bindTooltip(T(p.n).split(',')[0]).on('click',()=>{setView('explore');go(p.id)})});
+ if(route)L.polyline(route.stops.map(get).map(p=>p.ll),{color:'#b5232f',dashArray:'7 5'}).addTo(m);
+ if(pos)L.circleMarker(pos,{radius:7,color:'#fff',weight:3,fillColor:'#e0a526',fillOpacity:1}).addTo(m);
+ if(pts.length>1)m.fitBounds(pts,{padding:[30,30]});
+}
+function svgMap(){
+ const A=all(),la=A.map(p=>p.ll[0]),lo=A.map(p=>p.ll[1]);
+ const a=Math.min(...la)-.015,b=Math.max(...la)+.015,c=Math.min(...lo)-.015,d=Math.max(...lo)+.015;
+ const X=p=>40+(p.ll[1]-c)/(d-c)*520,Y=p=>30+(b-p.ll[0])/(b-a)*340;
+ const line=route?`<polyline points="${route.stops.map(get).map(p=>X(p)+','+Y(p)).join(' ')}" fill="none" stroke="#b5232f" stroke-width="3" stroke-dasharray="7 5"/>`:'';
+ $('#v-map').innerHTML=`<h2>Map</h2><p class="meta">Tap a pin to open the place.${route?' Dashed line is your route.':''}</p>
+ <svg class="map" viewBox="0 0 600 400" role="img" aria-label="Map of tourist places">
+  <path d="M0 70 90 30 170 60 270 10 380 55 480 20 600 60V0H0z" fill="#9fc1b7"/>
+  <path d="M0 400V330Q150 290 260 340T600 300V400z" fill="#cfe0d9"/>${line}
+  ${A.map(p=>`<g class="pin" tabindex="0" role="button" aria-label="${esc(T(p.n))}" data-g="${esc(p.id)}"><circle cx="${X(p)}" cy="${Y(p)}" r="${p.id===cur?13:9}" fill="${p.id===cur?'#b5232f':'#0f3d3a'}" stroke="#fff" stroke-width="3"/><text x="${X(p)+14}" y="${Y(p)+4}">${esc(T(p.n).split(',')[0])}</text></g>`).join('')}
+  ${pos&&pos[0]>a&&pos[0]<b&&pos[1]>c&&pos[1]<d?`<circle cx="${40+(pos[1]-c)/(d-c)*520}" cy="${30+(b-pos[0])/(b-a)*340}" r="7" fill="#e0a526" stroke="#fff" stroke-width="3"/>`:''}
+ </svg>`;
+ $$('#v-map .pin').forEach(g=>{const f=()=>{setView('explore');go(g.dataset.g)};g.onclick=f;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f()}}});
+}
+
+/* ---------- Live places: any town in India ---------- */
+const WP=(l,q)=>fetch(`https://${l}.wikipedia.org/w/api.php?format=json&origin=*&${q}`).then(r=>r.json());
+async function findPlace(q){
+ const r=await fetch('https://photon.komoot.io/api/?limit=8&bbox=68.1,6.5,97.5,37.1&q='+encodeURIComponent(q)).then(r=>r.json());
+ return r.features.filter(x=>x.properties.countrycode==='IN').slice(0,5).map(x=>{const p=x.properties;return{name:[p.name,p.district||p.city,p.state].filter(Boolean).join(', '),ll:[x.geometry.coordinates[1],x.geometry.coordinates[0]]}});
+}
+async function loadRegion(name,ll){
+ toast('Finding places near '+name.split(',')[0]+'…');
+ try{
+  const g=await WP('en',`action=query&list=geosearch&gscoord=${ll[0]}|${ll[1]}&gsradius=10000&gslimit=20`);
+  const hits=(g.query&&g.query.geosearch)||[];
+  if(!hits.length){toast('No guide entries here yet. Try a nearby bigger town.');return}
+  const ex=await WP('en',`action=query&prop=extracts|pageimages&exintro=1&explaintext=1&exsentences=4&exlimit=20&piprop=thumbnail&pithumbsize=600&pageids=${hits.map(h=>h.pageid).join('|')}`);
+  const pg=(ex.query&&ex.query.pages)||{};
+  region={name,ll,live:hits.map(h=>{const q=pg[h.pageid]||{};return{id:'w'+h.pageid,type:'other',live:1,title:h.title,ll:[h.lat,h.lon],dm:h.dist,n:{en:h.title},d:{en:q.extract||'No description available yet.'},img:q.thumbnail&&q.thumbnail.source}})};
+  cur=region.live[0].id;route=null;nb=null;cat='all';stopSpeech();renderAll();setView('explore');
+ }catch(e){toast('Could not load places. Check your internet connection.')}
+}
+async function ensureLang(p){
+ if(!p||!p.live||lang==='en'||p.d[lang]||p['x'+lang])return;
+ p['x'+lang]=1;
+ try{
+  const a=await WP('en',`action=query&prop=langlinks&lllang=${lang}&redirects=1&titles=${encodeURIComponent(p.title)}`);
+  const ll=Object.values(a.query.pages)[0].langlinks;
+  if(!ll||!ll[0]){toast(LANGS_NAME[lang]+' article not found for this place. Showing English.');return}
+  const t=ll[0]['*'],b=await WP(lang,`action=query&prop=extracts&exintro=1&explaintext=1&exsentences=4&titles=${encodeURIComponent(t)}`),x=Object.values(b.query.pages)[0];
+  p.n[lang]=t;if(x.extract)p.d[lang]=x.extract;
+  if(cur===p.id)renderExplore();
+ }catch(e){}
+}
+async function ensureImg(p){
+ if(!p||!p.live||!p.title||p.img||p.xi)return;p.xi=1;
+ try{const a=await WP('en',`action=query&prop=pageimages&piprop=thumbnail&pithumbsize=700&redirects=1&titles=${encodeURIComponent(p.title)}`);
+  const q=Object.values(a.query.pages)[0];if(q.thumbnail){p.img=q.thumbnail.source;if(cur===p.id)renderExplore()}}catch(e){}
+}
+async function names(){
+ if(lang==='en'||!region.live)return;
+ const L=lang,list=region.live.filter(p=>p.title&&!p.n[L]).slice(0,50);if(!list.length)return;
+ try{const a=await WP('en',`action=query&prop=langlinks&lllang=${L}&lllimit=50&redirects=1&titles=${list.map(p=>encodeURIComponent(p.title)).join('|')}`);
+  const m={};Object.values(a.query.pages).forEach(q=>{if(q.langlinks&&q.langlinks[0])m[q.title]=q.langlinks[0]['*']});
+  ((a.query&&a.query.redirects)||[]).forEach(r=>{if(m[r.to])m[r.from]=m[r.to]});
+  list.forEach(p=>{if(m[p.title])p.n[L]=m[p.title]});if(L===lang){renderExplore();renderTrips()}}catch(e){}
+}
+let found=[];
+$('#sf').onsubmit=async e=>{e.preventDefault();const q=$('#sq').value.trim();if(!q)return;
+ try{found=await findPlace(q);
+  if(!found.length){$('#sres').innerHTML='';toast('No place found in India. Check the spelling.');return}
+  if(found.length===1){pick(found[0]);return}
+  $('#sres').innerHTML=found.map((x,i)=>`<button data-r="${i}">📍 ${esc(x.name)}</button>`).join('');
+ }catch(x){toast('Searching needs an internet connection.')}};
+$('#sres').onclick=e=>{const b=e.target.closest('button');if(b){const x=found[b.dataset.r];$('#sres').innerHTML='';pick(x)}};
+function pick(x){pos=null;nb=null;$('#sres').innerHTML='';loadRegion(x.name,x.ll)}
+
+/* ---------- Voice input: Telugu, Hindi, English ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function voice(btn,done){
+ if(!SR){toast('Voice input works in Chrome, Edge or Safari. Please try one of them.');return}
+ const r=new SR();r.lang=VOICE[$('#vl').value];r.interimResults=false;r.maxAlternatives=1;btn.classList.add('rec');
+ r.onresult=e=>done(e.results[0][0].transcript);
+ r.onerror=e=>toast(e.error==='not-allowed'?'Allow microphone access to use voice.':'I could not hear you. Tap the mic and try again.');
+ r.onend=()=>btn.classList.remove('rec');
+ try{r.start()}catch(x){btn.classList.remove('rec')}
+}
+$('#qmic').onclick=()=>voice($('#qmic'),t=>{$('#q').value=t;ask(t,1);$('#q').value=''});
+$('#smic').onclick=()=>voice($('#smic'),t=>{$('#sq').value=t;$('#sf').requestSubmit()});
+
+/* ---------- Ask (answers in the language you used) ---------- */
+const K={food:/food|eat|laddu|prasad|hungry|tiffin|restaurant|భోజన|తిండి|ఆహార|లడ్డు|తినడ|తినాల|खाना|भोजन|खाने|लड्डू|भूख/i,
+ shop:/shop|buy|souvenir|craft|gift|market|షాప|కొన|మార్కెట్|దుకాణ|खरीद|दुकान|शॉपिंग|बाज़ार|बाजार|सामान/i,
+ route:/route|trip|plan|itinerary|మార్గ|ప్రయాణ|యాత్ర|ప్లాన్|रास्ता|मार्ग|यात्रा|योजना|प्लान/i,
+ near:/near|close|around|దగ్గర|సమీప|చుట్టు|पास|नज़दीक|नजदीक|निकट|आसपास/i,
+ time:/open|timing|hour|ticket|fee|dress|సమయ|టికెట్|ఫీజు|समय|टिकट|शुल्क|खुल/i};
+const A={food:{en:'You can find food places near here in the Trips tab. ',te:'ఈ ప్రాంతంలోని భోజన స్థలాలు ట్రిప్స్ ట్యాబ్‌లో ఉన్నాయి. ',hi:'यहाँ के खाने की जगहें ट्रिप्स टैब में हैं। '},
+ shop:{en:'Nearby shops and handicraft stores are in the Trips tab. ',te:'సమీపంలోని షాపులు, హస్తకళల దుకాణాలు ట్రిప్స్ ట్యాబ్‌లో ఉన్నాయి. ',hi:'पास की दुकानें और हस्तशिल्प स्टोर ट्रिप्स टैब में हैं। '},
+ route:{en:'A ready route for this area is in the Trips tab. Tap Start this route.',te:'ఈ ప్రాంతానికి సిద్ధమైన మార్గం ట్రిప్స్ ట్యాబ్‌లో ఉంది. ఈ మార్గం ప్రారంభించండి నొక్కండి.',hi:'इस इलाके का तैयार रास्ता ट्रिप्स टैब में है। यह रास्ता शुरू करें दबाएँ।'},
+ near:{en:'Places near here: ',te:'ఇక్కడ సమీపంలోని ప్రదేశాలు: ',hi:'यहाँ के पास की जगहें: '},
+ time:{en:'Timings, tickets and dress codes change. Please check the official notice board or website before you go.',te:'సమయాలు, టికెట్లు, వస్త్రధారణ నియమాలు మారవచ్చు. వెళ్లే ముందు అధికారిక నోటీసు లేదా వెబ్‌సైట్ చూడండి.',hi:'समय, टिकट और ड्रेस कोड बदल सकते हैं। जाने से पहले आधिकारिक सूचना या वेबसाइट देखें।'},
+ story:{en:'Local story: ',te:'స్థానిక కథ: ',hi:'स्थानीय कथा: '}};
+const SW=new Set(['temple','swamy','local','the','శ్రీ','ఆలయం','श्री','मंदिर']);
+function answer(q){
+ const s=q.toLowerCase(),l=/[\u0C00-\u0C7F]/.test(q)?'te':/[\u0900-\u097F]/.test(q)?'hi':'en',Tl=o=>o[l]||o.en;
+ for(const k of ['food','shop','route','near','time'])if(K[k].test(s)){
+  let t=A[k][l];if(k==='near')t+=ordered().slice(0,3).map(x=>Tl(x.n).split(',')[0]).join(', ')+'.';
+  return{t,l}}
+ const hit=all().find(x=>Object.values(x.n).some(n=>n.toLowerCase().split(/[ ,]+/).some(w=>w.length>3&&!SW.has(w)&&s.includes(w)))),t=hit||get(cur);
+ return{t:Tl(t.d)+(t.s?' '+A.story[l]+t.s:''),l:t.d[l]?l:'en'};
+}
+function say(t,me,l){const d=document.createElement('div');d.className='msg'+(me?' me':'');d.textContent=t;
+ if(!me){const b=document.createElement('button');b.className='ghost';b.style.marginTop='8px';b.textContent='🎧 '+U('listen');b.onclick=()=>speak(t,l||lang);d.append(document.createElement('br'),b)}
+ $('#chat').append(d);d.scrollIntoView({block:'nearest'})}
+function ask(q,v){say(q,1);const r=answer(q);say(r.t,0,r.l);if(v)speak(r.t,r.l)}
+$('#askf').onsubmit=e=>{e.preventDefault();const q=$('#q').value.trim();if(!q)return;ask(q);$('#q').value=''};
+const SUG={en:['Why is this place famous?','What food should I try?','What can I buy?','Plan my trip'],te:['ఈ ప్రదేశం ఎందుకు ప్రసిద్ధి?','ఏ ఆహారం తినాలి?','ఏమి కొనాలి?','నా ప్రయాణం ప్లాన్ చేయండి'],hi:['यह जगह क्यों प्रसिद्ध है?','क्या खाना चाहिए?','क्या खरीदें?','मेरी यात्रा की योजना बनाएँ']};
+function renderSugg(){$('#sugg').innerHTML=SUG[lang].map(x=>`<button>${x}</button>`).join('');
+ $$('#sugg button').forEach(b=>b.onclick=()=>ask(b.textContent))}
+
+/* ---------- Trips, food, shopping ---------- */
+function routes(){
+ if(!region.live)return ROUTES;if(region.india)return ROUTES_IN;
+ const left=region.live.slice(0,6),o=[left.shift()];
+ while(left.length){const l=o[o.length-1];left.sort((x,y)=>dist(l.ll,x.ll)-dist(l.ll,y.ll));o.push(left.shift())}
+ return[{id:'auto',n:'Nearby highlights',stops:o.map(x=>x.id)}];
+}
+async function loadNearby(){
+ nb='loading';renderTrips();const [la,lo]=region.ll;
+ const q=`[out:json][timeout:20];(nwr["amenity"~"restaurant|cafe|fast_food|food_court"]["name"](around:2500,${la},${lo});nwr["shop"~"gift|handicraft|souvenir|clothes|jewelry"]["name"](around:2500,${la},${lo}););out center 40;`;
+ try{const j=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)}).then(r=>r.json());
+  nb=j.elements.map(e=>({t:e.tags,k:e.tags.amenity?'food':'shop',ll:[e.lat??(e.center&&e.center.lat),e.lon??(e.center&&e.center.lon)]})).filter(x=>x.ll[0]);
+ }catch(e){nb='err'}
+ renderTrips();
+}
+function renderTrips(){
+ const li=a=>a.map(x=>`<div class="item"><b>${esc(lang==='te'?x[1]:x[0])}</b>${lang==='te'?esc(x[0])+' · ':''}<p>${esc(x[2])}</p></div>`).join('');
+ const near=k=>region.india?'<p class="meta">Search a city or tap “Use my location” to see food and shops nearby.</p>':nb==='loading'?'<p class="meta">Loading nearby places…</p>':nb==='err'?'<p class="meta">Could not load nearby places. Check your internet connection.</p>':
+  (Array.isArray(nb)&&nb.filter(x=>x.k===k).length?'<div class="grid" style="margin-top:10px">'+nb.filter(x=>x.k===k).slice(0,8).map(x=>`<div class="item"><b>${esc(x.t['name:'+lang]||x.t.name)}</b><a class="btn" style="margin-top:8px" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${x.ll[0]},${x.ll[1]}">🗺️ ${U('nav')}</a></div>`).join('')+'</div>':'<p class="meta">Nothing found within 2.5 km.</p>');
+ $('#v-trips').innerHTML=`<h2>Tourist routes</h2><p class="meta">Pick a route and the guide moves stop by stop.</p>
+ ${routes().map(r=>`<div class="card"><h3>${esc(r.n)}</h3><ol>${r.stops.map(id=>`<li><button data-go="${id}">${ICON[get(id).type]||'📍'} ${esc(T(get(id).n))}</button></li>`).join('')}</ol><button class="primary" data-route="${r.id}">Start this route</button></div>`).join('')}
+ <h2 style="margin-top:22px">🍛 Local food</h2>${region.live?near('food'):'<div class="grid" style="margin-top:10px">'+li(FOOD)+'</div>'}
+ <h2 style="margin-top:22px">🛍️ Local shopping</h2><div style="margin-bottom:20px">${region.live?near('shop'):'<div class="grid" style="margin-top:10px">'+li(SHOP)+'</div>'}</div>`;
+}
+
+/* ---------- Admin ---------- */
+function renderAdmin(){
+ $('#v-admin').innerHTML=`<h2>Admin panel</h2><p class="meta">Add a tourist place. It is saved on this device only.</p>
+ <form class="card" id="af">
+  <label for="an">Place name</label><input id="an" required>
+  <div class="row"><div><label for="at">Category</label><select id="at"><option value="temple">Temple</option><option value="museum">Museum</option><option value="market">Market</option><option value="food">Food</option><option value="other">Other</option></select></div>
+  <div><label for="al">Language of description</label><select id="al"><option value="en">English</option><option value="te">Telugu</option><option value="hi">Hindi</option></select></div></div>
+  <div class="row"><div><label for="ala">Latitude</label><input id="ala" type="number" step="any" min="-90" max="90" required placeholder="13.6288"></div><div><label for="alo">Longitude</label><input id="alo" type="number" step="any" min="-180" max="180" required placeholder="79.4192"></div></div>
+  <label for="ad">Description</label><textarea id="ad" rows="4" required></textarea>
+  <label for="as">Local story (optional)</label><textarea id="as" rows="2"></textarea>
+  <div class="row"><div><label for="ai">Image</label><input id="ai" type="file" accept="image/*"></div><div><label for="au">Audio guide</label><input id="au" type="file" accept="audio/*"></div></div>
+  <p class="meta" style="margin-top:6px">If you upload audio, it plays for the language you chose above. Otherwise the app reads the description aloud.</p>
+  <button class="primary" style="margin-top:12px;width:100%">Add place</button>
+ </form>
+ <h3>Places you added</h3>${custom.length?custom.map(p=>`<div class="card"><b>${esc(T(p.n))}</b> <span class="tag">${esc(p.type)}</span><div class="bar" style="margin:8px 0 0"><button class="ghost" data-go="${esc(p.id)}">Open</button><button class="ghost" data-del="${esc(p.id)}">Delete</button></div></div>`).join(''):'<p class="meta">No places yet. Your first one will appear here.</p>'}`;
+ $('#af').onsubmit=async e=>{e.preventDefault();
+  const rd=f=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)});
+  const L=$('#al').value,txt=$('#ad').value.trim(),nm=$('#an').value.trim(),im=$('#ai').files[0],au=$('#au').files[0];
+  if(im&&im.size>900e3)return toast('Image is over 900 KB. Choose a smaller one.');
+  if(au&&au.size>1.5e6)return toast('Audio is over 1.5 MB. Choose a shorter clip.');
+  const p={id:'c'+Date.now(),type:$('#at').value,ll:[+$('#ala').value,+$('#alo').value],n:{en:nm,te:nm,hi:nm},d:{en:txt,[L]:txt},s:$('#as').value.trim()};
+  if(im)p.img=await rd(im);if(au)p.audio={[L]:await rd(au)};
+  custom.push(p);if(!ls.set('ll_custom',custom)){custom.pop();return}
+  toast(inR(p)?'Place added':'Place added. It shows when you browse within 80 km of it.');renderAll();
+ };
+}
+
+/* ---------- Shell ---------- */
+function setView(v){stopSpeech();$$('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+ $$('nav button').forEach(b=>b.toggleAttribute('aria-current',b.dataset.v===v)||b.removeAttribute('aria-current'));
+ $$('nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.v===v));window.scrollTo({top:0});if(v==='map')renderMap();if(v==='trips'){if(region.live&&!region.india&&nb===null)loadNearby();else renderTrips()}}
+$$('nav button').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+$$('.langs button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;ls.set('ll_lang',lang);stopSpeech();renderAll()});
+function renderAll(){
+ document.documentElement.lang=lang;$('#tag').textContent=U('tag');
+ $$('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===lang));
+ renderExplore();renderMap();renderTrips();renderAdmin();renderSugg();ensureLang(get(cur));ensureImg(get(cur));names();$('#vl').value=lang;$('#sq').placeholder=U('sph');$('#q').placeholder=U('qph');
+}
+if('speechSynthesis' in window)speechSynthesis.getVoices();
+renderAll();setView('explore');
+say('Hi! Ask me about a place, local food, shopping or a route.');
+</script>
+</body>
+</html>
